@@ -12,11 +12,11 @@ faq = {
     "як зв'язатися з підтримкою": "Ви вже звернулись 😄 Ми на зв'язку!"
 }
 
-# Активні тікети: user_id <-> thread_id
+
 active_tickets = {}
 thread_to_user = {}
 
-# Створити топік у форум-групі
+
 async def create_forum_topic(context: ContextTypes.DEFAULT_TYPE, user_full_name: str) -> int:
     result = await context.bot.create_forum_topic(
         chat_id=GROUP_CHAT_ID,
@@ -24,7 +24,7 @@ async def create_forum_topic(context: ContextTypes.DEFAULT_TYPE, user_full_name:
     )
     return result.message_thread_id
 
-# Надіслати повідомлення в топік
+
 async def send_message_to_topic(context: ContextTypes.DEFAULT_TYPE, user_id, user_full_name, message):
     if user_id not in active_tickets:
         thread_id = await create_forum_topic(context, user_full_name)
@@ -37,7 +37,7 @@ async def send_message_to_topic(context: ContextTypes.DEFAULT_TYPE, user_id, use
     await context.bot.send_message(chat_id=GROUP_CHAT_ID, message_thread_id=thread_id, text=text)
     return thread_id
 
-# Обробка повідомлень користувача
+
 async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.lower()
     user_id = update.effective_user.id
@@ -57,7 +57,6 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
         text="✅ Прийнято! Оператор відповість якнайшвидше."
     )
 
-# Обробка відповіді оператора в топіку
 async def handle_group_reply(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if not update.message.is_topic_message:
         return
@@ -74,14 +73,12 @@ async def handle_group_reply(update: Update, context: ContextTypes.DEFAULT_TYPE)
     except Exception as e:
         print(f"❌ Не вдалося надіслати відповідь користувачу {user_id}: {e}")
 
-# Команди
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Вітаю! Я бот техпідтримки. Напишіть своє питання.")
 
 async def get_id(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(f"Ваш Chat ID: {update.effective_chat.id}")
 
-# Запуск бота
 if __name__ == '__main__':
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
