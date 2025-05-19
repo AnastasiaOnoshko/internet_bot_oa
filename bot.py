@@ -1,7 +1,7 @@
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, filters, ContextTypes
 
-BOT_TOKEN = "7811394855:AAGsvwF1ZTHn6SHHDjOM2DRc7pnrJPexe-Y"
+BOT_TOKEN = ""
 GROUP_CHAT_ID = -1002544676823  
 
 faq = {
